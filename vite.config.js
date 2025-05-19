@@ -4,12 +4,27 @@ import { resolve } from 'path';
 
 export default defineConfig({
   plugins: [react()],
+  base: '/', // Critical for Vercel asset paths
   
-  // Define explícitamente la raíz del proyecto (donde está index.html)
-  root: resolve(__dirname, '.'), // Busca index.html en la raíz
-  
-  // Carpeta para archivos estáticos (se copiarán tal cual al build)
+  // Configuración específica para Vercel
   publicDir: 'public',
+  appType: 'spa', // Importante para SPA en Vercel
+
+  build: {
+    outDir: 'dist',
+    emptyOutDir: true,
+    sourcemap: true,
+    rollupOptions: {
+      input: {
+        main: resolve(__dirname, 'index.html') // Ruta absoluta
+      },
+      output: {
+        entryFileNames: `assets/[name].[hash].js`,
+        chunkFileNames: `assets/[name].[hash].js`,
+        assetFileNames: `assets/[name].[hash].[ext]`
+      }
+    }
+  },
 
   server: {
     port: 5173,
@@ -19,26 +34,6 @@ export default defineConfig({
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ''),
         secure: false
-      }
-    }
-  },
-
-  build: {
-    outDir: 'dist',
-    emptyOutDir: true,
-    sourcemap: true,
-
-    rollupOptions: {
-      // Ruta ABSOLUTA al index.html (usando path.resolve)
-      input: resolve(__dirname, 'index.html'),
-      
-      output: {
-        manualChunks: {
-          react: ['react', 'react-dom'],
-          vendor: ['axios', 'date-fns'],
-          charts: ['recharts'],
-          maps: ['leaflet', 'react-leaflet']
-        }
       }
     }
   }
