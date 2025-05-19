@@ -1,10 +1,15 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+import { resolve } from 'path';
 
 export default defineConfig({
   plugins: [react()],
-
-  publicDir: 'public',  // Define la carpeta de archivos estáticos
+  
+  // Define explícitamente la raíz del proyecto (donde está index.html)
+  root: resolve(__dirname, '.'), // Busca index.html en la raíz
+  
+  // Carpeta para archivos estáticos (se copiarán tal cual al build)
+  publicDir: 'public',
 
   server: {
     port: 5173,
@@ -20,14 +25,13 @@ export default defineConfig({
 
   build: {
     outDir: 'dist',
-    emptyOutDir: true,  // Limpia la carpeta 'dist' antes de construir
-
-    sourcemap: true,   // Si quieres mapas de origen (opcional)
+    emptyOutDir: true,
+    sourcemap: true,
 
     rollupOptions: {
-      input: {
-        main: './index.html'  // Ruta relativa desde la raíz para el HTML principal
-      },
+      // Ruta ABSOLUTA al index.html (usando path.resolve)
+      input: resolve(__dirname, 'index.html'),
+      
       output: {
         manualChunks: {
           react: ['react', 'react-dom'],
@@ -38,4 +42,4 @@ export default defineConfig({
       }
     }
   }
-})
+});
