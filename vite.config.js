@@ -3,6 +3,9 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
+
+  publicDir: 'public',  // Define la carpeta de archivos estáticos
+
   server: {
     port: 5173,
     proxy: {
@@ -14,10 +17,17 @@ export default defineConfig({
       }
     }
   },
+
   build: {
     outDir: 'dist',
-    sourcemap: true,
+    emptyOutDir: true,  // Limpia la carpeta 'dist' antes de construir
+
+    sourcemap: true,   // Si quieres mapas de origen (opcional)
+
     rollupOptions: {
+      input: {
+        main: './index.html'  // Ruta relativa desde la raíz para el HTML principal
+      },
       output: {
         manualChunks: {
           react: ['react', 'react-dom'],
