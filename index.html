@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Dashboard de Facturación DGII">
+  
+  <!-- Favicon (reemplaza con tu propio favicon.ico) -->
+  <link rel="icon" type="image/svg+xml" href="/favicon.ico">
+  
+  <!-- Preload de fuentes y assets críticos -->
+  <link rel="preload" href="/assets/logo.svg" as="image">
+  <link rel="preload" href="/assets/municipios.geojson" as="fetch" crossorigin>
+  
+  <!-- Meta tags para SEO y social -->
+  <meta property="og:title" content="Dashboard DGII">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="/assets/logo-social.png">
+  <meta property="og:url" content="https://dashboard.tudominio.com">
+  
+  <title>Dashboard de Facturación DGII</title>
+
+  <!-- Preconnect a APIs externas -->
+  <link rel="preconnect" href="https://waebhooksv.pedidosconfirmacion.com">
+  
+  <!-- Tailwind via CDN (opcional, solo para desarrollo) -->
+  <!-- En producción usa el build de Tailwind -->
+  <!-- <script src="https://cdn.tailwindcss.com"></script> -->
+  
+  <!-- Leaflet CSS (para el mapa) -->
+  <link 
+    rel="stylesheet" 
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin="anonymous"
+  />
+  
+  <style>
+    /* Estilos críticos iniciales */
+    body {
+      font-family: 'Inter var', system-ui, -apple-system, sans-serif;
+      margin: 0;
+      background-color: #f3f4f6;
+    }
+    #root {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .leaflet-container {
+      z-index: 0 !important;
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="module" src="/src/main.jsx"></script>
+  
+  <!-- Load the `intersection-observer` polyfill -->
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=IntersectionObserver"></script>
+  
+  <!-- Leaflet JS -->
+  <script 
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+    crossorigin="anonymous"
+  ></script>
+  
+  <!-- Inicialización de PWA (opcional) -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+          .then(registration => {
+            console.log('SW registered: ', registration);
+          }).catch(registrationError => {
+            console.log('SW registration failed: ', registrationError);
+          });
+      });
+    }
+  </script>
+</body>
+</html>
